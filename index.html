@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Ayomide Boye-Ogundiya">
+        <meta name="description" content="Typing Game ">
+        <meta name="keywords" content="web development, html, css, javascript, winnipeg, canada">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Changa:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mrspecht/cdn/reset.css">
+        <title>Typing Game</title>
+        <link rel="icon" href="./asset/image/white-cutout-64px.png" type="icon/png">
+        <link rel="stylesheet" href="./assets/style/main.css" media="all">
+        <script src="./assets/script/app.js" defer></script>
+    </head>
+    <body>
+        <main>
+            <div class="iphone-container">
+                <div class="iphone-notch">
+                    <div class="iphone-speaker"></div>
+                    <div class="iphone-camera"></div>
+                </div>
+                <div id="game">
+                    <div class ="top-screen-content">
+                        <h2>Speedy Typer</h2>
+                        <button id="start-btn">Start</button>
+                    </div>
+                    <p id="timer"><span id="time">0</span></p>
+                    <p id="word-display">Press Start to begin</p>
+                    <input type="text" id="word-input" placeholder="Type here..." disabled>
+                    <p id="score"><span id="hits">0</span> HITS</p>
+                    <p class="created-by">Created by Bogamez</p>
+                </div>
+            </div>
+            <audio id="background-music" loop>
+                <source src="./assets/media/game-bg-sound.mp3" type="audio/mpeg">
+            </audio>
+        </main>
+    </body>
+</html>

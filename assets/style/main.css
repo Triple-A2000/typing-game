@@ -1,0 +1,141 @@
+@charset "utf-8";
+
+:root {
+    --app-bg-light: #f2f2f2;
+    --app-white-grey: #b0b3b8;
+    --app-dark-blue: #155697;
+    --app-black-blue: #021733;
+    --app-blue: #1877F2;
+    --app-light-blue: #b6d9ec;
+    --app-light-grey: #3A3B3C;
+    --app-dark-grey: #242526;
+    --app-bg-dark: #18191A;
+    --app-semibold: 600;
+    --app-font-size: 19px;
+    --app-white: #fff;
+}
+
+body {
+    background-color: var(--app-bg-dark);
+    height: 100vh;
+    color: var(--app-white);
+    font-family: "Changa", Arial, Helvetica, sans-serif;
+}
+
+.iphone-container {
+    height: 570px;
+    width: 300px;
+    margin: 0 auto;
+    padding: 0px 10px;
+    background: var(--app-black-blue);
+    border-radius: 40px;
+    border: 5px solid var(--app-bg-dark);
+    box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.5);
+}
+
+.iphone-container .iphone-notch {
+    height: 30px;
+    width: 50%;
+    justify-self: center;
+    background: var(--app-bg-dark);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.iphone-container .iphone-notch .iphone-speaker {
+    height: 10px;
+    width: 50px;
+    background: var(--app-white-grey);
+    border-radius: 50px;
+    margin: 0px;
+    margin-left: 30px;
+    display: inline-block;
+}
+
+.iphone-container .iphone-notch .iphone-camera {
+    height: 10px;
+    width: 10px;
+    background: var(--app-white-grey);
+    border-radius: 50%;
+    margin: 0px;
+    display: inline-block;
+}
+
+p {
+    font-size: 18px;
+    color: var(--app-white-grey);
+}
+
+#game {
+    margin-top: 80px;
+}
+
+.top-screen-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
+    h2 {
+        color: var(--app-white);
+        font-size: 18px;
+        font-weight: var(--app-semibold);
+    }
+
+    #start-btn {
+        color: var(--app-white);
+        background-color: var(--app-black-blue);
+        font-weight: var(--app-semibold);
+        padding: 0px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    #start-btn:hover {
+        color: var(--app-light-blue);
+    }
+}
+
+
+#timer {
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--app-white);
+    text-align: center;
+}
+
+#word-display {
+    font-size: 25px;
+    font-weight: bold;
+    background-color: var(--app-blue);
+    color: var(--app-white);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+#word-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#score {
+    font-size: 18px;
+    font-weight: var(--app-semibold);
+    color: var(--app-white);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.created-by {
+    font-size: 14px;
+    color: var(--app-white-grey);
+    text-align: center;
+    margin-top: 10px;
+}
