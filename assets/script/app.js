@@ -1,129 +1,138 @@
 'use strict';
 
-class TypingGame {
-    _words;
-    _timeLeft;
-    _score;
-    _currentWord;
-    _timer;
-    _gameActive;
+import * as utils from './utils.js';
+import words from './words.js';
+import Score from './score.js';
 
-    constructor() {
-        this.words = [
-            'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building', 'weather',
-            'bottle', 'history', 'dream', 'character', 'money', 'absolute', 'machine',
-            'accurate', 'rainbow', 'bicycle', 'eclipse', 'trouble', 'developer',
-            'database', 'periodic', 'fortune', 'phone', 'future', 'pasta', 'microwave',
-            'jungle', 'wallet', 'canada', 'velvet', 'potion', 'treasure', 'beacon',
-            'whisper', 'breeze', 'coffee', 'beauty', 'agency', 'chocolate', 'eleven',
-            'alphabet', 'magician', 'triangle', 'baseball', 'beyond', 'banana', 'perfume',
-            'computer', 'butterfly', 'music', 'eagle', 'crown', 'chess', 'laptop',
-            'bedroom', 'enemy', 'button', 'door', 'bird', 'superman', 'library',
-            'bookstore', 'language', 'homework', 'beach', 'economy', 'awesome',
-            'science', 'mystery', 'famous', 'league', 'memory', 'leather', 'planet',
-            'software', 'update', 'yellow', 'keyboard', 'window', 'beans', 'truck',
-            'sheep', 'blossom', 'secret', 'wonder', 'destiny', 'quest', 'download',
-            'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil', 'audio', 'school',
-            'detective', 'hero', 'progress', 'winter', 'passion', 'rebel', 'amber',
-            'jacket', 'article', 'paradox', 'social', 'resort', 'mask', 'escape',
-            'promise', 'band', 'level', 'hope', 'moonlight', 'media', 'orchestra',
-            'volcano', 'guitar', 'raindrop', 'diamond', 'illusion', 'firefly', 'ocean',
-            'cascade', 'journey', 'laughter', 'horizon', 'marvel', 'compiler', 'twilight',
-            'harmony', 'symphony', 'solitude', 'essence', 'forest', 'melody',
-            'vision', 'silence', 'eternity', 'embrace', 'poet', 'ricochet', 'mountain',
-            'dance', 'sunrise', 'dragon', 'adventure', 'galaxy', 'echo', 'fantasy',
-            'radiant', 'mermaid', 'legend', 'monitor', 'plastic', 'pressure', 'bread',
-            'cake', 'caramel', 'juice', 'mouse', 'charger', 'pillow', 'candle', 'sunset',
-            'farmer', 'garden', 'whistle', 'blanket', 'picnic', 'sweater', 'lantern',
-            'theater', 'traffic', 'website', 'courage', 'shelter', 'painter', 'twinkle',
-            'squeeze', 'forever', 'stadium', 'gourmet', 'flower', 'bravery', 'playful',
-            'captain', 'vibrant', 'damage', 'outlet', 'general', 'batman', 'enigma',
-            'storm', 'universe', 'engine', 'mistake', 'hurricane'
-        ];
-        this.timeLeft = 99;
-        this.score = 0;
-        this.currentWord = '';
-        this.timer = null;
-        this.gameActive = false;
+const startGame = utils.select('#start-btn');
+const numberOfHits = utils.select('#hits');
+const timer = utils.select('#time');
+const randomWords = utils.select('#word-display');
+const typedWord = utils.select('#word-input');
+const bgMusic = new Audio('./assets/media/game-bg-sound.mp3');
+bgMusic.type = 'audio/mp3';
+bgMusic.loop = true;
+const gameOverSound = new Audio('./assets/media/game-over-sound.mp3');
+gameOverSound.type = 'audio/mp3';
+const correct = new Audio('./assets/media/game-correct-sound.mp3');
+correct.type = 'audio/mp3';
 
-        this.timeDisplay = document.getElementById('time');
-        this.scoreDisplay = document.getElementById('hits');
-        this.wordDisplay = document.getElementById('word-display');
-        this.wordInput = document.getElementById('word-input');
-        this.startBtn = document.getElementById('start-btn');
-        this.backgroundMusic = document.getElementById('background-music');
+let timeCount = 99;
+let count = 0;
+let timeInterval;
+let wordList = [...words.sort(() => Math.random() - 0.5)];
 
-        this.startBtn.addEventListener('click', () => this.startGame());
-        this.wordInput.addEventListener('input', () => this.checkWord());
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') this.endGame();
-        });
-    }
+typedWord.disabled = true;
+typedWord.style.cursor = 'not-allowed';
 
-    startGame() {
-        if (this.gameActive) return;
-        this.gameActive = true;
-        this.score = 0;
-        this.timeLeft = 99;
-        this.timeDisplay.textContent = this.timeLeft;
-        this.scoreDisplay.textContent = this.score;
-        this.wordInput.disabled = false;
-        this.wordInput.value = '';
-        this.startBtn.textContent = 'Restart';
-        this.wordInput.focus();
+function setTime() {
+    clearInterval(timeInterval);
+    timeInterval = setInterval(() => {
+        timer.textContent = timeCount.toString().padStart(2, '0');
+        timeCount--;
 
-        this.playMusic();
-        this.generateWord();
-
-        this.timer = setInterval(() => {
-            this.timeLeft--;
-            this.timeDisplay.textContent = this.timeLeft;
-            if (this.timeLeft <= 0) {
-                this.endGame();
-            }
-        }, 1000);
-    }
-
-    generateWord() {
-        const randomIndex = Math.floor(Math.random() * this.words.length);
-        this.currentWord = this.words[randomIndex];
-        this.wordDisplay.textContent = this.currentWord;
-    }
-
-    checkWord() {
-        if (this.wordInput.value.trim().toLowerCase() === this.currentWord) {
-            this.score++;
-            this.scoreDisplay.textContent = this.score;
-            this.wordInput.value = '';
-            this.generateWord();
+        if (timeCount === 5) {
+            let blinkCount = 0;
+            let blinkInterval = setInterval(() => {
+                timer.style.visibility = timer.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                blinkCount++;
+                if (blinkCount >= 10) {
+                    clearInterval(blinkInterval);
+                    timer.style.visibility = 'visible';
+                }
+            }, 500);
         }
-    }
 
-    endGame() {
-        clearInterval(this.timer);
-        this.gameActive = false;
-        this.wordInput.disabled = true;
-        this.wordDisplay.textContent = 'Game Over';
-        this.stopMusic();
-    }
+        if (timeCount < 0) {
+            clearInterval(timeInterval);
+            bgMusic.pause();
+            gameOver();
+        }
+    }, 1000);
+}
 
-    playMusic() {
-        this.backgroundMusic.play();
-    }
+function gameOver() {
+    typedWord.disabled = true;
+    typedWord.style.cursor = 'not-allowed';
+    typedWord.value = '';
+    randomWords.textContent = "Game Over!";
+    randomWords.style.color = '#8D0E3D';
+    gameOverSound.play();
 
-    stopMusic() {
-        this.backgroundMusic.pause();
-        this.backgroundMusic.currentTime = 0;
+    const accuracyPercentage = (count / words.length) * 100;
+    const score = new Score(count, accuracyPercentage, new Date().toLocaleString());
+    saveScore(score);
+    updateScoreboardDisplay();
+}
+
+function getNextWord() {
+    const newWord = wordList.pop();
+    return `${newWord}`;
+}
+
+function validateHits() {
+    const displayedWord = randomWords.textContent.trim();
+    const userInput = typedWord.value.trim();
+
+    if ((displayedWord.length === userInput.length) && (displayedWord === userInput)) {
+        correct.currentTime = 0;
+        correct.play();
+        randomWords.textContent = getNextWord();
+        typedWord.value = '';
+        count++;
+        numberOfHits.textContent = `${count}`;
     }
 }
 
-function getDate() {
-    const options = { year: 'numeric', 
-                      month: 'short', 
-                      day: '2-digit' 
-                    };
+const rawScores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
+const validScores = rawScores.filter(score => score && score.hits !== undefined);
+localStorage.setItem('scoreHistory', JSON.stringify(validScores));
 
-    return new Date().toLocaleDateString('en-CA', options);
+function saveScore(score) {
+    let scores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
+    const plainScore = {
+        hits: score.hits,
+        date: score.date
+    };
+    scores.push(plainScore);
+    scores.sort((a, b) => b.hits - a.hits);
+    scores = scores.slice(0, 9);
+    localStorage.setItem('scoreHistory', JSON.stringify(scores));
 }
 
-const typingGame = new TypingGame();
+function updateScoreboardDisplay() {
+    const scoreboardBody = utils.select('#scoreboard-body'); // You need to add this tbody in HTML
+    if (!scoreboardBody) return;
+
+    const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory')) || [];
+    scoreboardBody.innerHTML = '';
+
+    scoreHistory.forEach((score, index) => {
+        const row = utils.create('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${score.hits ?? '0'}</td>
+            <td>${score.date ?? 'N/A'}</td>
+        `;
+        scoreboardBody.append(row);
+    });
+}
+
+utils.listen('input', typedWord, validateHits);
+
+window.onload = () => {
+    updateScoreboardDisplay();
+};
+
+utils.listen('click', startGame, () => {
+    typedWord.disabled = false;
+    typedWord.style.cursor = 'text';
+    typedWord.focus();
+    randomWords.textContent = getNextWord();
+    count = 0;
+    timeCount = 99;
+    numberOfHits.textContent = `${count}`;
+    randomWords.style.color = '#000';
+    setTime();
+    bgMusic.play();
+});

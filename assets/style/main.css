@@ -22,7 +22,16 @@ body {
     font-family: "Changa", Arial, Helvetica, sans-serif;
 }
 
+main {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .iphone-container {
+    position: relative;
     height: 570px;
     width: 300px;
     margin: 0 auto;
@@ -138,4 +147,22 @@ p {
     color: var(--app-white-grey);
     text-align: center;
     margin-top: 10px;
+}
+
+#scoreboard-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: var(--app-black-blue);
+    padding: 20px;
+    border: 2px solid #f2f2f2;
+    border-radius: 5px;
+
+    td {
+        padding: 5px;
+        font-size: 16px;
+        color: var(--app-white);
+    }
 }
