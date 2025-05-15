@@ -17,7 +17,7 @@ gameOverSound.type = 'audio/mp3';
 const correct = new Audio('./assets/media/game-correct-sound.mp3');
 correct.type = 'audio/mp3';
 
-let timeCount = 99;
+let timeCount = 12;
 let count = 0;
 let timeInterval;
 let wordList = [...words.sort(() => Math.random() - 0.5)];
@@ -130,7 +130,7 @@ utils.listen('click', startGame, () => {
     typedWord.focus();
     randomWords.textContent = getNextWord();
     count = 0;
-    timeCount = 99;
+    timeCount = 12;
     numberOfHits.textContent = `${count}`;
     randomWords.style.color = '#000';
     setTime();
